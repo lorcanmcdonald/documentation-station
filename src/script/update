@@ -1,0 +1,30 @@
+#!/bin/bash
+set -euo pipefail
+IFS=$'\n\t'
+
+index_md=${1:-./index.md}
+
+dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/.."
+workdir="$( cd "$( dirname "$index_md" )" && pwd )"
+
+find "$workdir" -name "*.dot" -print0 \
+  | tee /dev/stderr \
+  | xargs -0 -I@ \
+    dot \
+      -Tsvg \
+      -O @
+
+find "$workdir" -name "*.plot" -print0 \
+  | tee /dev/stderr \
+  | xargs -0 -I@ \
+    gnuplot -e "set output '@.svg'" @
+
+find "$workdir" -name "*.md" -print0 \
+  | tee /dev/stderr \
+  | xargs -0 -I@ \
+    pandoc \
+      -s \
+      -H "$dir/style/pandoc.css" \
+      -f markdown \
+      -t html \
+      -o @.html \

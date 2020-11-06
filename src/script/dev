@@ -1,0 +1,22 @@
+#!/bin/bash
+set -euo pipefail
+IFS=$'\n\t'
+
+dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/.."
+
+index_md=${1:-./index.md}
+index_md_dir="$( cd "$( dirname "$index_md" )" && pwd )"
+
+python -m SimpleHTTPServer &
+
+"$dir/script/update" "$index_md_dir/$index_md"
+while inotifywait "$index_md_dir" \
+  --event=modify \
+  --excludei '.*.png' \
+  --excludei '.*.html' \
+  --excludei '.*~' \
+  --excludei '.*.svg'; do \
+    "$dir/script/update" "$index_md_dir/$index_md"
+done
+
+wait

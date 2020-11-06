@@ -1,0 +1,8 @@
+#!/bin/bash
+
+set -euo pipefail
+IFS=$'\n\t'
+
+dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/.."
+
+docker build -t lorcan/documentation-station "$dir"
