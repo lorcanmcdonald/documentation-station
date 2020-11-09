@@ -28,3 +28,4 @@ find "$workdir" -name "*.md" -print0 \
       -f markdown \
       -t html \
       -o @.html \
+      @
