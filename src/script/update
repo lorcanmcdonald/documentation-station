@@ -11,13 +11,13 @@ find "$workdir" -name "*.dot" -print0 \
   | tee /dev/stderr \
   | xargs -0 -I@ \
     dot \
-      -Tsvg \
+      -Tpng \
       -O @
 
 find "$workdir" -name "*.plot" -print0 \
   | tee /dev/stderr \
   | xargs -0 -I@ \
-    gnuplot -e "set output '@.svg'" @
+    gnuplot -e "set output '@.png'" @
 
 find "$workdir" -name "*.md" -print0 \
   | tee /dev/stderr \

@@ -10,6 +10,9 @@ index_md_dir="$( cd "$( dirname "$index_md" )" && pwd )"
 python -m SimpleHTTPServer &
 
 "$dir/script/update" "$index_md_dir/$index_md"
+
+echo "Access documentation at [32mhttp://localhost:8000/$index_md.html[0m"
+
 while inotifywait "$index_md_dir" \
   --event=modify \
   --excludei '.*.png' \
